@@ -1,15 +1,19 @@
 import copy
 
 from .PPOAgent import PPOAgent
+# from .PPOAgent_ICM_old import PPOAgent
 from .BlueSleepAgent import BlueSleepAgent
 import numpy as np
 import os
 
 class MainAgent(PPOAgent):
-    def __init__(self):
+    def __init__(self, chkp):
         self.action_space = [133, 134, 135, 139, 3, 4, 5, 9, 16, 17, 18, 22, 11, 12, 13, 14, 141, 142, 143, 144,
                              132, 2, 15, 24, 25, 26, 27]
         self.end_episode()
+        self.chkp = chkp
+
+
 
     def get_action(self, observation, action_space=None):
 
@@ -55,16 +59,16 @@ class MainAgent(PPOAgent):
         return BlueSleepAgent()
 
     def load_bline(self):
-        ckpt = os.path.join(os.getcwd(),"Models","bline","model.pth")
+        ckpt = self.chkp
+        # ckpt = os.path.join(os.getcwd(),"cyborg-cage-2","Models","bline","model.pth")
         return PPOAgent(52, self.action_space, restore=True, ckpt=ckpt,
                        deterministic=True, training=False)
-
 
     def load_meander(self):
-        ckpt = os.path.join(os.getcwd(),"Models","meander","model.pth")
+        ckpt = self.chkp
+        # ckpt = os.path.join(os.getcwd(),"cyborg-cage-2","Models","meander","model.pth")
         return PPOAgent(52, self.action_space, restore=True, ckpt=ckpt,
                        deterministic=True, training=False)
-
 
     def fingerprint_meander(self):
         return np.sum(self.scan_state) == 3

@@ -48,7 +48,7 @@ class PPOAgent(BaseAgent):
     def add_scan(self, observation):
         indices = [0, 4, 8, 12, 28, 32, 36, 40, 44, 48]
         for id, index in enumerate(indices):
-            # if scan seen on defender, enterprise 0-2, opserver0 or user 0-4
+            # if scan seen on defender, enterprise 0-2, opserver 0 or user 0-4
             if observation[index] == 1 and observation[index+1] == 0:
                 # 1 if scanned before, 2 if is the latest scan
                 self.scan_state = [1 if x == 2 else x for x in self.scan_state]
@@ -194,7 +194,6 @@ class PPOAgent(BaseAgent):
         self.scan_state_old = np.zeros(10)
         # add start actions
         self.start_actions = copy.copy(self.start)
-
 
     def set_initial_values(self, action_space, observation=None):
         self.memory = Memory()
